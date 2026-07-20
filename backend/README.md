@@ -72,3 +72,21 @@ python -m unittest discover -s tests
 ```
 
 The normal test suite uses fake or mocked providers and does not call DeepSeek.
+
+## DeepSeek Smoke Check
+
+After creating the repository-root `.env`, verify that the backend can read the
+configuration without making a paid request:
+
+```bash
+python -m scripts.smoke_deepseek
+```
+
+When you are ready to make one small real request to DeepSeek, run:
+
+```bash
+python -m scripts.smoke_deepseek --live
+```
+
+The command never prints the API key. The `--live` form may consume API quota;
+it only sends the text `Reply with exactly: DeepSeek connection OK`.

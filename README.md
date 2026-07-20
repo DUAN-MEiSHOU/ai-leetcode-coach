@@ -101,6 +101,9 @@ Run backend tests:
 python -m unittest discover -s tests
 ```
 
+To validate a locally configured DeepSeek key, see the smoke-check instructions
+in `backend/README.md`. The live check is opt-in and sends one small request.
+
 ## Development Principle
 
 Do not ask an AI coding agent to build the whole product at once.

@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "AI LeetCode Coach",
+  "description": "A local Side Panel shell for the AI LeetCode Coach browser extension.",
+  "version": "0.1.0",
+  "minimum_chrome_version": "114",
+  "permissions": ["sidePanel"],
+  "action": {
+    "default_title": "Open AI LeetCode Coach"
+  },
+  "background": {
+    "service_worker": "src/background/background.js"
+  },
+  "side_panel": {
+    "default_path": "src/sidepanel/index.html"
+  }
+}

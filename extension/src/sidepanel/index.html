@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI LeetCode Coach</title>
+    <link rel="stylesheet" href="./sidepanel.css">
+  </head>
+  <body>
+    <main class="panel-shell">
+      <header class="panel-header">
+        <p class="eyebrow">Local extension shell</p>
+        <h1>AI LeetCode Coach</h1>
+      </header>
+
+      <section class="input-section" aria-labelledby="context-label">
+        <label id="context-label" for="coach-input">Problem, code, or error text</label>
+        <textarea
+          id="coach-input"
+          rows="12"
+          placeholder="Paste problem text, code, or an error message here."
+        ></textarea>
+        <button id="send-button" type="button">Send</button>
+      </section>
+
+      <section class="output-section" aria-labelledby="output-title">
+        <h2 id="output-title">Coach Output</h2>
+        <div id="coach-output" class="output-box" aria-live="polite">
+          Paste some text and click Send to see a local placeholder response.
+        </div>
+      </section>
+    </main>
+
+    <script src="./sidepanel.js"></script>
+  </body>
+</html>

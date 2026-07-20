@@ -31,3 +31,19 @@ class CoachEchoResponse(BaseModel):
     source: InputSource
     content_length: int
     message: str
+
+
+class CoachExplainRequest(BaseModel):
+    mode: CoachMode
+    source: InputSource
+    content: str = Field(min_length=1, max_length=20_000)
+    language: str | None = Field(default=None, max_length=40)
+
+
+class CoachExplainResponse(BaseModel):
+    status: Literal["ok"] = "ok"
+    mode: CoachMode
+    source: InputSource
+    provider: str
+    model: str
+    explanation: str

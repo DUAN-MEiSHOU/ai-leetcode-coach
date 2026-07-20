@@ -69,10 +69,11 @@ The implementation folders may initially be empty. Codex should create them one 
 - Phase 1: loadable Manifest V3 extension shell.
 - Phase 2: selected webpage text can be sent to the Side Panel through a context menu.
 - Phase 3: minimal FastAPI backend with `/health` and `/api/v1/coach/echo`.
+- Phase 4 foundation: DeepSeek provider abstraction and mocked explanation flow.
 
 Not yet included:
 
-- DeepSeek integration;
+- real DeepSeek calls until a local `.env` key is configured;
 - PostgreSQL persistence;
 - authentication;
 - payments;

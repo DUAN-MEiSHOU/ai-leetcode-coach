@@ -64,6 +64,42 @@ ai-leetcode-coach/
 
 The implementation folders may initially be empty. Codex should create them one milestone at a time.
 
+## Current Status
+
+- Phase 1: loadable Manifest V3 extension shell.
+- Phase 2: selected webpage text can be sent to the Side Panel through a context menu.
+- Phase 3: minimal FastAPI backend with `/health` and `/api/v1/coach/echo`.
+
+Not yet included:
+
+- DeepSeek integration;
+- PostgreSQL persistence;
+- authentication;
+- payments;
+- Web App;
+- code execution;
+- automatic LeetCode scraping.
+
+## Local Backend
+
+From the `backend` directory:
+
+```bash
+python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+Verify:
+
+```text
+http://127.0.0.1:8000/health
+```
+
+Run backend tests:
+
+```bash
+python -m unittest discover -s tests
+```
+
 ## Development Principle
 
 Do not ask an AI coding agent to build the whole product at once.

@@ -11,10 +11,10 @@ This is a local-only Manifest V3 extension prototype.
 - Send button.
 - Local placeholder output.
 - Right-click selected webpage text and send it to the Side Panel.
+- Optional call to the local FastAPI echo endpoint.
 
 ## Not Included Yet
 
-- Backend connection.
 - DeepSeek integration.
 - Database persistence.
 - Page scraping.
@@ -37,3 +37,20 @@ This is a local-only Manifest V3 extension prototype.
 4. Confirm the Side Panel opens and the selected text appears in the input area.
 
 This feature only receives text selected by the user. It does not read or scrape the full page.
+
+## Check Backend Connection
+
+Start the backend first:
+
+```bash
+cd ../backend
+python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+```
+
+Then return to the Side Panel and click **Send**. The output should begin with:
+
+```text
+Backend echo response
+```
+
+If the backend is not running, the extension shows a local fallback response instead.

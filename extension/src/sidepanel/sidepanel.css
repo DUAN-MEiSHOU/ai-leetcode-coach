@@ -105,6 +105,11 @@ button:hover {
   background: #1f5fd1;
 }
 
+button:disabled {
+  background: #95a3bb;
+  cursor: wait;
+}
+
 button:focus {
   box-shadow: 0 0 0 3px rgba(39, 110, 241, 0.22);
   outline: none;

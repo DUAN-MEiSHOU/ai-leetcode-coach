@@ -1,0 +1,13 @@
+[project]
+name = "ai-leetcode-coach-backend"
+version = "0.1.0"
+description = "FastAPI backend for AI LeetCode Coach."
+requires-python = ">=3.12"
+dependencies = [
+  "fastapi>=0.138.0",
+  "uvicorn>=0.35.0",
+  "httpx>=0.28.0"
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

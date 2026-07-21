@@ -44,7 +44,8 @@ The current dependency file contains only:
 
 The project expects PostgreSQL at the `DATABASE_URL` in the repository-root
 `.env`. The provided Docker Compose configuration starts a dedicated local
-database:
+database on host port `5433`, keeping it separate from any existing PostgreSQL
+service on `5432`:
 
 ```bash
 docker compose up -d postgres

@@ -37,6 +37,7 @@ class Settings:
     deepseek_model: str = "deepseek-chat"
     llm_timeout_seconds: float = 30.0
     llm_max_retries: int = 1
+    database_url: str = "postgresql+psycopg://leetcode_coach:leetcode_coach@localhost:5432/leetcode_coach"
 
 
 @lru_cache
@@ -55,4 +56,8 @@ def get_settings() -> Settings:
         deepseek_model=os.getenv("DEEPSEEK_MODEL", "deepseek-chat"),
         llm_timeout_seconds=float(os.getenv("LLM_TIMEOUT_SECONDS", "30")),
         llm_max_retries=int(os.getenv("LLM_MAX_RETRIES", "1")),
+        database_url=os.getenv(
+            "DATABASE_URL",
+            "postgresql+psycopg://leetcode_coach:leetcode_coach@localhost:5432/leetcode_coach",
+        ),
     )

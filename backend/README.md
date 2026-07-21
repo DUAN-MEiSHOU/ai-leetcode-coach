@@ -12,11 +12,13 @@ Phase 3 introduces a minimal FastAPI backend.
 - DeepSeek provider abstraction
 - Mocked LLM tests
 - Unit tests with Python `unittest`
+- SQLAlchemy learning-record repositories
+- Alembic initial migration for PostgreSQL
+- `POST /api/v1/attempts` and `GET /api/v1/reviews/due`
 
 ## Not Included Yet
 
 - Real DeepSeek calls until `DEEPSEEK_API_KEY` is configured locally
-- PostgreSQL persistence
 - Authentication
 - Rate limiting
 - Production deployment
@@ -34,6 +36,24 @@ The current dependency file contains only:
 - FastAPI
 - Uvicorn
 - HTTPX
+- SQLAlchemy
+- Alembic
+- Psycopg PostgreSQL driver
+
+## PostgreSQL
+
+The project expects PostgreSQL at the `DATABASE_URL` in the repository-root
+`.env`. The provided Docker Compose configuration starts a dedicated local
+database:
+
+```bash
+docker compose up -d postgres
+cd backend
+alembic upgrade head
+```
+
+Phase 7 persists problem references and learning records only. It never stores
+full pasted problem statements or code snapshots.
 
 ## Environment
 

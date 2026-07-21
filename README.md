@@ -72,11 +72,11 @@ The implementation folders may initially be empty. Codex should create them one 
 - Phase 4: DeepSeek provider abstraction, local configuration, and Side Panel explanation flow.
 - Phase 5: structured coaching modes and safe Markdown response rendering.
 - Phase 6: Python-first static context for imports, calls, and selected lines.
+- Phase 7 foundation: PostgreSQL models, migration, repositories, and learning-record API.
 
 Not yet included:
 
 - real DeepSeek calls until a local `.env` key is configured;
-- PostgreSQL persistence;
 - authentication;
 - payments;
 - Web App;

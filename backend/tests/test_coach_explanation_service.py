@@ -59,6 +59,28 @@ class CoachExplanationServiceTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response.code_context.selected_line, "counts = Counter(items)")
         self.assertIn("collections.Counter", provider.last_request.messages[1].content)
 
+    async def test_auto_detects_valid_python_without_static_context_for_text(self) -> None:
+        provider = FakeProvider()
+        service = CoachExplanationService(provider)
+
+        python_response = await service.explain(
+            CoachExplainRequest(
+                mode="explain_code",
+                source="manual_paste",
+                content="from collections import Counter\ncounts = Counter(items)\n",
+            )
+        )
+        text_response = await service.explain(
+            CoachExplainRequest(
+                mode="explain_problem",
+                source="manual_paste",
+                content="Find two numbers whose sum equals the target.",
+            )
+        )
+
+        self.assertIsNotNone(python_response.code_context)
+        self.assertIsNone(text_response.code_context)
+
 
 if __name__ == "__main__":
     unittest.main()

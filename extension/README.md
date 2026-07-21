@@ -9,7 +9,7 @@ This is a local-only Manifest V3 extension prototype.
 - Browser Side Panel.
 - Manual multiline text input.
 - Visible coaching-mode selector.
-- Auto-detect or Python language selection.
+- Auto-detect or Python language selection; valid Python is parsed locally in either mode.
 - Optional line number for selected-line explanations.
 - Send button.
 - Right-click selected webpage text and send it to the Side Panel.

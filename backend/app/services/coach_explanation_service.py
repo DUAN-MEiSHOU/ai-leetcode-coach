@@ -33,9 +33,13 @@ class CoachExplanationService:
         )
 
     def _build_code_context(self, request: CoachExplainRequest):
-        if request.language == "python":
-            return self._python_code_analysis_service.analyze(
-                request.surrounding_context or request.content,
-                request.selected_line_number,
-            )
-        return None
+        if request.language not in {"auto", "python"}:
+            return None
+
+        code_context = self._python_code_analysis_service.analyze(
+            request.surrounding_context or request.content,
+            request.selected_line_number,
+        )
+        if request.language == "auto" and not code_context.syntax_valid:
+            return None
+        return code_context

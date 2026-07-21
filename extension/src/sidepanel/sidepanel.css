@@ -83,6 +83,23 @@ textarea {
   line-height: 1.45;
 }
 
+select {
+  width: 100%;
+  min-height: 40px;
+  border: 1px solid #cbd3df;
+  border-radius: 8px;
+  padding: 0 12px;
+  background: #ffffff;
+  color: #1d2433;
+  font: inherit;
+}
+
+select:focus {
+  border-color: #276ef1;
+  box-shadow: 0 0 0 3px rgba(39, 110, 241, 0.16);
+  outline: none;
+}
+
 textarea:focus {
   border-color: #276ef1;
   box-shadow: 0 0 0 3px rgba(39, 110, 241, 0.16);
@@ -121,8 +138,60 @@ button:focus {
   border-radius: 8px;
   padding: 12px;
   overflow-wrap: anywhere;
-  white-space: pre-wrap;
   background: #ffffff;
   color: #2f3a4c;
   line-height: 1.45;
+}
+
+.output-box > :first-child {
+  margin-top: 0;
+}
+
+.output-box p,
+.output-box h3,
+.output-box pre,
+.output-box ul,
+.output-box ol {
+  margin: 0 0 14px;
+}
+
+.output-box h3 {
+  color: #121826;
+  font-size: 16px;
+}
+
+.output-box ul,
+.output-box ol {
+  padding-left: 24px;
+}
+
+.output-box code {
+  border-radius: 4px;
+  padding: 1px 4px;
+  background: #edf1f7;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.9em;
+}
+
+.output-box pre {
+  overflow-x: auto;
+  padding: 12px;
+  border-radius: 6px;
+  background: #182235;
+  color: #f2f5f9;
+  white-space: pre;
+}
+
+.output-box pre code {
+  padding: 0;
+  background: transparent;
+  color: inherit;
+}
+
+.response-metadata {
+  margin-top: 16px;
+  border-top: 1px solid #d8dee8;
+  padding-top: 10px;
+  color: #5f6f89;
+  font-size: 12px;
 }

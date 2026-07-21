@@ -8,6 +8,7 @@ This is a local-only Manifest V3 extension prototype.
 - Toolbar action.
 - Browser Side Panel.
 - Manual multiline text input.
+- Visible coaching-mode selector.
 - Send button.
 - Right-click selected webpage text and send it to the Side Panel.
 - Local FastAPI request to a DeepSeek-backed explanation endpoint.
@@ -48,7 +49,7 @@ python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 Then return to the Side Panel and click **Send**. The output should begin with:
 
 ```text
-Coach explanation
+Explanation
 ```
 
 The backend must have a local DeepSeek configuration as described in

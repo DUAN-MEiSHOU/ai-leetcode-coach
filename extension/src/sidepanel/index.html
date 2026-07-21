@@ -14,6 +14,18 @@
       </header>
 
       <section class="input-section" aria-labelledby="context-label">
+        <label for="coach-mode">Coaching mode</label>
+        <select id="coach-mode">
+          <option value="explain_problem">Explain problem</option>
+          <option value="hint">Progressive hint</option>
+          <option value="pseudocode">Pseudocode</option>
+          <option value="complete_solution">Complete solution</option>
+          <option value="explain_code" selected>Explain code</option>
+          <option value="explain_line">Explain selected line</option>
+          <option value="explain_syntax">Explain syntax</option>
+          <option value="explain_library">Explain library function</option>
+          <option value="analyse_error">Analyse error</option>
+        </select>
         <label id="context-label" for="coach-input">Problem, code, or error text</label>
         <textarea
           id="coach-input"

@@ -70,6 +70,7 @@ The implementation folders may initially be empty. Codex should create them one 
 - Phase 2: selected webpage text can be sent to the Side Panel through a context menu.
 - Phase 3: minimal FastAPI backend with `/health` and `/api/v1/coach/echo`.
 - Phase 4: DeepSeek provider abstraction, local configuration, and Side Panel explanation flow.
+- Phase 5: structured coaching modes and safe Markdown response rendering.
 
 Not yet included:
 

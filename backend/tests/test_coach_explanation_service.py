@@ -35,9 +35,11 @@ class CoachExplanationServiceTests(unittest.IsolatedAsyncioTestCase):
         self.assertEqual(response.status, "ok")
         self.assertEqual(response.provider, "fake")
         self.assertEqual(response.model, "fake-model")
+        self.assertEqual(response.prompt_version, "coach-v1")
         self.assertIn("returns the value", response.explanation)
         self.assertIsNotNone(provider.last_request)
         self.assertEqual(len(provider.last_request.messages), 2)
+        self.assertIn("explain the selected line", provider.last_request.messages[0].content.lower())
 
 
 if __name__ == "__main__":

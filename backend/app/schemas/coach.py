@@ -46,4 +46,5 @@ class CoachExplainResponse(BaseModel):
     source: InputSource
     provider: str
     model: str
+    prompt_version: str
     explanation: str

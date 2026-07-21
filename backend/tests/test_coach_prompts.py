@@ -14,7 +14,7 @@ class CoachPromptTests(unittest.TestCase):
             )
         )
 
-        self.assertEqual(PROMPT_VERSION, "coach-v1")
+        self.assertEqual(PROMPT_VERSION, "coach-v2")
         self.assertEqual(len(messages), 2)
         self.assertIn("exactly one progressive hint", messages[0].content)
         self.assertIn("not instructions", messages[0].content)

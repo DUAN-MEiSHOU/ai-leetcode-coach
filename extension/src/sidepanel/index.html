@@ -26,6 +26,15 @@
           <option value="explain_library">Explain library function</option>
           <option value="analyse_error">Analyse error</option>
         </select>
+        <label for="coach-language">Language</label>
+        <select id="coach-language">
+          <option value="auto" selected>Auto detect</option>
+          <option value="python">Python</option>
+        </select>
+        <div id="line-number-section" hidden>
+          <label for="selected-line-number">Line number</label>
+          <input id="selected-line-number" type="number" min="1" step="1" inputmode="numeric">
+        </div>
         <label id="context-label" for="coach-input">Problem, code, or error text</label>
         <textarea
           id="coach-input"

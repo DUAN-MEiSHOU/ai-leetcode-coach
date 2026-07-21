@@ -17,6 +17,24 @@ CoachMode = Literal[
 ]
 
 InputSource = Literal["manual_paste", "page_selection"]
+CoachLanguage = Literal["auto", "python"]
+
+
+class SourceLine(BaseModel):
+    number: int
+    content: str
+
+
+class PythonCodeContext(BaseModel):
+    language: Literal["python"] = "python"
+    syntax_valid: bool
+    syntax_error: str | None = None
+    imports: list[str] = Field(default_factory=list)
+    function_calls: list[str] = Field(default_factory=list)
+    standard_library_calls: list[str] = Field(default_factory=list)
+    selected_line_number: int | None = None
+    selected_line: str | None = None
+    surrounding_lines: list[SourceLine] = Field(default_factory=list)
 
 
 class CoachEchoRequest(BaseModel):
@@ -37,7 +55,9 @@ class CoachExplainRequest(BaseModel):
     mode: CoachMode
     source: InputSource
     content: str = Field(min_length=1, max_length=20_000)
-    language: str | None = Field(default=None, max_length=40)
+    language: CoachLanguage = "auto"
+    selected_line_number: int | None = Field(default=None, ge=1)
+    surrounding_context: str | None = Field(default=None, max_length=20_000)
 
 
 class CoachExplainResponse(BaseModel):
@@ -47,4 +67,5 @@ class CoachExplainResponse(BaseModel):
     provider: str
     model: str
     prompt_version: str
+    code_context: PythonCodeContext | None = None
     explanation: str

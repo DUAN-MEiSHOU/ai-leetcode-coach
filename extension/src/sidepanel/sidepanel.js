@@ -1,10 +1,23 @@
 const input = document.querySelector("#coach-input");
 const modeSelect = document.querySelector("#coach-mode");
+const languageSelect = document.querySelector("#coach-language");
+const lineNumberSection = document.querySelector("#line-number-section");
+const selectedLineNumberInput = document.querySelector("#selected-line-number");
 const sendButton = document.querySelector("#send-button");
 const output = document.querySelector("#coach-output");
 const pendingSelectionKey = "pendingSelection";
 const backendExplainUrl = "http://127.0.0.1:8000/api/v1/coach/explain";
 let currentSource = "manual_paste";
+
+function updateLineNumberVisibility() {
+  const isLineExplanation = modeSelect.value === "explain_line";
+  lineNumberSection.hidden = !isLineExplanation;
+  selectedLineNumberInput.required = isLineExplanation;
+
+  if (!isLineExplanation) {
+    selectedLineNumberInput.value = "";
+  }
+}
 
 function appendInlineMarkdown(container, text) {
   const pattern = /(\*\*[^*]+\*\*|`[^`]+`)/g;
@@ -155,7 +168,11 @@ async function sendToBackend(rawText) {
       body: JSON.stringify({
         mode: modeSelect.value,
         source: currentSource,
-        content: text
+        content: text,
+        language: languageSelect.value,
+        selected_line_number: selectedLineNumberInput.value
+          ? Number(selectedLineNumberInput.value)
+          : null
       })
     });
 
@@ -210,3 +227,6 @@ input.addEventListener("keydown", (event) => {
 input.addEventListener("input", () => {
   currentSource = "manual_paste";
 });
+
+modeSelect.addEventListener("change", updateLineNumberVisibility);
+updateLineNumberVisibility();

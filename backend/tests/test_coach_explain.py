@@ -31,6 +31,19 @@ class CoachExplainRouteTests(unittest.TestCase):
         self.assertEqual(response.status_code, 503)
         self.assertEqual(response.json()["detail"], "DEEPSEEK_API_KEY is not configured.")
 
+    def test_explain_rejects_unsupported_language(self) -> None:
+        response = self.client.post(
+            "/api/v1/coach/explain",
+            json={
+                "mode": "explain_code",
+                "source": "manual_paste",
+                "content": "return value",
+                "language": "java",
+            },
+        )
+
+        self.assertEqual(response.status_code, 422)
+
 
 if __name__ == "__main__":
     unittest.main()

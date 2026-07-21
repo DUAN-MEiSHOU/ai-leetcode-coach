@@ -9,6 +9,8 @@ This is a local-only Manifest V3 extension prototype.
 - Browser Side Panel.
 - Manual multiline text input.
 - Visible coaching-mode selector.
+- Auto-detect or Python language selection.
+- Optional line number for selected-line explanations.
 - Send button.
 - Right-click selected webpage text and send it to the Side Panel.
 - Local FastAPI request to a DeepSeek-backed explanation endpoint.
@@ -59,3 +61,8 @@ API key and does not persist the submitted text.
 
 If the backend is unavailable or the provider rejects the request, the Side
 Panel shows the returned error without falling back to a fabricated explanation.
+
+For **Explain selected line**, paste the surrounding Python code, choose
+**Python**, and enter the line number. The backend parses the submitted text
+without executing it, then provides the selected line and nearby context to the
+coach.

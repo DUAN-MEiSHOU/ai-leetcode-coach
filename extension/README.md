@@ -9,13 +9,11 @@ This is a local-only Manifest V3 extension prototype.
 - Browser Side Panel.
 - Manual multiline text input.
 - Send button.
-- Local placeholder output.
 - Right-click selected webpage text and send it to the Side Panel.
-- Optional call to the local FastAPI echo endpoint.
+- Local FastAPI request to a DeepSeek-backed explanation endpoint.
 
 ## Not Included Yet
 
-- DeepSeek integration.
 - Database persistence.
 - Page scraping.
 - LeetCode editor access.
@@ -38,7 +36,7 @@ This is a local-only Manifest V3 extension prototype.
 
 This feature only receives text selected by the user. It does not read or scrape the full page.
 
-## Check Backend Connection
+## Get A Coach Explanation
 
 Start the backend first:
 
@@ -50,7 +48,13 @@ python -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
 Then return to the Side Panel and click **Send**. The output should begin with:
 
 ```text
-Backend echo response
+Coach explanation
 ```
 
-If the backend is not running, the extension shows a local fallback response instead.
+The backend must have a local DeepSeek configuration as described in
+`../backend/README.md`. Sending text passes that text to the local backend, which
+then sends it to DeepSeek for the explanation. The extension never receives the
+API key and does not persist the submitted text.
+
+If the backend is unavailable or the provider rejects the request, the Side
+Panel shows the returned error without falling back to a fabricated explanation.

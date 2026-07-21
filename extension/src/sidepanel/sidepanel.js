@@ -2,7 +2,7 @@ const input = document.querySelector("#coach-input");
 const sendButton = document.querySelector("#send-button");
 const output = document.querySelector("#coach-output");
 const pendingSelectionKey = "pendingSelection";
-const backendEchoUrl = "http://127.0.0.1:8000/api/v1/coach/echo";
+const backendExplainUrl = "http://127.0.0.1:8000/api/v1/coach/explain";
 let currentSource = "manual_paste";
 
 function setInputFromSelection(text) {
@@ -12,7 +12,7 @@ function setInputFromSelection(text) {
   input.focus();
 }
 
-function renderLocalFallback(rawText, reason) {
+function renderBackendUnavailable(rawText, reason) {
   const text = rawText.trim();
 
   if (!text) {
@@ -22,16 +22,23 @@ function renderLocalFallback(rawText, reason) {
   }
 
   output.textContent = [
-    "Local placeholder response",
+    "Coach request was not completed",
     "",
-    "The extension shell received your text, but the local backend was not reached.",
+    "The local backend or model provider could not be reached.",
     "",
     `Reason: ${reason}`,
     "",
-    `Characters: ${text.length}`,
-    "",
-    "Backend, DeepSeek, persistence, and review scheduling are intentionally not connected yet."
+    `Characters: ${text.length}`
   ].join("\n");
+}
+
+async function getResponseError(response) {
+  try {
+    const data = await response.json();
+    return data.detail || `Backend returned HTTP ${response.status}`;
+  } catch {
+    return `Backend returned HTTP ${response.status}`;
+  }
 }
 
 async function sendToBackend(rawText) {
@@ -44,10 +51,10 @@ async function sendToBackend(rawText) {
   }
 
   sendButton.disabled = true;
-  output.textContent = "Checking local backend...";
+  output.textContent = "Asking the coach...";
 
   try {
-    const response = await fetch(backendEchoUrl, {
+    const response = await fetch(backendExplainUrl, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -60,23 +67,22 @@ async function sendToBackend(rawText) {
     });
 
     if (!response.ok) {
-      throw new Error(`Backend returned HTTP ${response.status}`);
+      throw new Error(await getResponseError(response));
     }
 
     const data = await response.json();
     output.textContent = [
-      "Backend echo response",
+      "Coach explanation",
       "",
-      data.message,
+      data.explanation,
       "",
       `Source: ${data.source}`,
       `Mode: ${data.mode}`,
-      `Characters: ${data.content_length}`,
-      "",
-      "DeepSeek, persistence, and review scheduling are intentionally not connected yet."
+      `Provider: ${data.provider}`,
+      `Model: ${data.model}`
     ].join("\n");
   } catch (error) {
-    renderLocalFallback(text, error.message);
+    renderBackendUnavailable(text, error.message);
   } finally {
     sendButton.disabled = false;
   }

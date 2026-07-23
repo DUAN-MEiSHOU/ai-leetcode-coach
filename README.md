@@ -44,6 +44,7 @@ Read these before development:
 - `docs/DATA_MODEL.md`
 - `docs/ROADMAP.md`
 - `docs/ORIGINAL_PROJECT_ANALYSIS.md`
+- `docs/PROJECT_STATUS_AND_LAUNCH_PLAN.md`
 - `CODEX_START_PROMPT.md`
 
 ## Planned Repository Structure

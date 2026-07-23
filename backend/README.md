@@ -15,6 +15,7 @@ Phase 3 introduces a minimal FastAPI backend.
 - SQLAlchemy learning-record repositories
 - Alembic initial migration for PostgreSQL
 - `POST /api/v1/attempts` and `GET /api/v1/reviews/due`
+- `POST /api/v1/plans` for persisted review and new-problem time slots
 
 ## Not Included Yet
 
@@ -55,6 +56,15 @@ alembic upgrade head
 
 Phase 7 persists problem references and learning records only. It never stores
 full pasted problem statements or code snapshots.
+
+## Review And Plans
+
+Attempt outcomes update a deterministic review interval: `1, 3, 7, 16, 35, 90`
+days for independent success or easy review. Hints retain the current interval;
+viewing a solution, giving up, or struggling resets the interval to one day.
+
+`POST /api/v1/plans` accepts available study minutes. It prioritises due reviews
+and creates unassigned new-problem time slots instead of storing a problem bank.
 
 ## Environment
 

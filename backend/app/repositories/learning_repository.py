@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from app.models.attempt import Attempt
 from app.models.problem_reference import ProblemReference
 from app.models.review_schedule import ReviewSchedule
+from app.models.study_plan import StudyPlan, StudyPlanItem
 from app.models.user import User
 
 LOCAL_USER_NAME = "Local learner"
@@ -116,6 +117,23 @@ class LearningRepository:
         self._session.flush()
         return schedule
 
+    def update_review_schedule(
+        self,
+        *,
+        schedule: ReviewSchedule,
+        attempt: Attempt,
+        interval_days: int,
+        review_streak: int,
+        next_review_at: datetime,
+    ) -> ReviewSchedule:
+        schedule.interval_days = interval_days
+        schedule.review_streak = review_streak
+        schedule.next_review_at = next_review_at
+        schedule.last_attempt_id = attempt.id
+        schedule.last_outcome = attempt.outcome
+        self._session.flush()
+        return schedule
+
     def list_due_reviews(self, *, user_id: UUID, now: datetime, limit: int) -> list[ReviewSchedule]:
         return list(
             self._session.scalars(
@@ -131,3 +149,43 @@ class LearningRepository:
 
     def get_problem(self, problem_id: UUID) -> ProblemReference | None:
         return self._session.get(ProblemReference, problem_id)
+
+    def create_study_plan(
+        self,
+        *,
+        user_id: UUID,
+        plan_date,
+        available_minutes: int,
+        focus: str | None,
+    ) -> StudyPlan:
+        plan = StudyPlan(
+            user_id=user_id,
+            plan_date=plan_date,
+            available_minutes=available_minutes,
+            focus=focus,
+        )
+        self._session.add(plan)
+        self._session.flush()
+        return plan
+
+    def add_study_plan_item(
+        self,
+        *,
+        study_plan_id: UUID,
+        problem_reference_id: UUID | None,
+        item_type: str,
+        estimated_minutes: int,
+        reason: str,
+        position: int,
+    ) -> StudyPlanItem:
+        item = StudyPlanItem(
+            study_plan_id=study_plan_id,
+            problem_reference_id=problem_reference_id,
+            item_type=item_type,
+            estimated_minutes=estimated_minutes,
+            reason=reason,
+            position=position,
+        )
+        self._session.add(item)
+        self._session.flush()
+        return item

@@ -2,8 +2,15 @@ from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from app.db.session import get_session
-from app.schemas.learning import AttemptCreateRequest, AttemptCreateResponse, DueReviewResponse
+from app.schemas.learning import (
+    AttemptCreateRequest,
+    AttemptCreateResponse,
+    DueReviewResponse,
+    StudyPlanCreateRequest,
+    StudyPlanResponse,
+)
 from app.services.learning_record_service import LearningRecordService
+from app.services.study_plan_service import StudyPlanService
 
 router = APIRouter()
 
@@ -22,3 +29,11 @@ def get_due_reviews(
     session: Session = Depends(get_session),
 ) -> list[DueReviewResponse]:
     return LearningRecordService(session).list_due_reviews(limit)
+
+
+@router.post("/plans", response_model=StudyPlanResponse, status_code=201)
+def create_study_plan(
+    request: StudyPlanCreateRequest,
+    session: Session = Depends(get_session),
+) -> StudyPlanResponse:
+    return StudyPlanService(session).create_plan(request)

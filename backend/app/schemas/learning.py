@@ -40,6 +40,8 @@ class AttemptCreateResponse(BaseModel):
     outcome: AttemptOutcome
     attempted_at: datetime
     review_schedule_id: UUID
+    next_review_at: datetime
+    interval_days: int
 
 
 class DueReviewResponse(BaseModel):
@@ -52,3 +54,27 @@ class DueReviewResponse(BaseModel):
     interval_days: int
     review_streak: int
     last_outcome: AttemptOutcome | None
+
+
+class StudyPlanCreateRequest(BaseModel):
+    available_minutes: int = Field(ge=15, le=480)
+    focus: str | None = Field(default=None, max_length=120)
+
+
+class StudyPlanItemResponse(BaseModel):
+    item_type: Literal["review", "new"]
+    estimated_minutes: int
+    reason: str
+    position: int
+    problem_reference_id: UUID | None = None
+    title: str | None = None
+    url: str | None = None
+
+
+class StudyPlanResponse(BaseModel):
+    id: UUID
+    plan_date: datetime
+    available_minutes: int
+    allocated_minutes: int
+    remaining_minutes: int
+    items: list[StudyPlanItemResponse]

@@ -36,7 +36,7 @@ class LearningRouteTests(unittest.TestCase):
         self.app.dependency_overrides.clear()
         self.engine.dispose()
 
-    def test_attempt_creation_is_visible_in_due_reviews(self) -> None:
+    def test_attempt_creation_returns_a_future_review_date(self) -> None:
         create_response = self.client.post(
             "/api/v1/attempts",
             json={
@@ -51,9 +51,19 @@ class LearningRouteTests(unittest.TestCase):
             },
         )
 
-        due_response = self.client.get("/api/v1/reviews/due")
-
         self.assertEqual(create_response.status_code, 201)
-        self.assertEqual(due_response.status_code, 200)
-        self.assertEqual(len(due_response.json()), 1)
-        self.assertEqual(due_response.json()[0]["title"], "Two Sum")
+        self.assertEqual(create_response.json()["interval_days"], 1)
+        self.assertIn("next_review_at", create_response.json())
+
+    def test_plan_creates_new_problem_time_slots_without_a_problem_bank(self) -> None:
+        response = self.client.post(
+            "/api/v1/plans",
+            json={"available_minutes": 60},
+        )
+
+        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.json()["allocated_minutes"], 60)
+        self.assertEqual(
+            [item["item_type"] for item in response.json()["items"]],
+            ["new", "new"],
+        )

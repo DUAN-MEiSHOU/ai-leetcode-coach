@@ -1,15 +1,17 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from sqlalchemy.orm import Session
 
 from app.repositories.learning_repository import LearningRepository
 from app.schemas.learning import AttemptCreateRequest, AttemptCreateResponse, DueReviewResponse
+from app.services.review_service import ReviewService
 
 
 class LearningRecordService:
     def __init__(self, session: Session) -> None:
         self._session = session
         self._repository = LearningRepository(session)
+        self._review_service = ReviewService()
 
     def record_attempt(self, request: AttemptCreateRequest) -> AttemptCreateResponse:
         user = self._repository.get_or_create_local_user()
@@ -30,8 +32,20 @@ class LearningRecordService:
             problem_reference_id=problem.id,
             attempt=attempt,
         )
+        decision = self._review_service.calculate_next_review(
+            attempt.outcome,
+            schedule.review_streak,
+        )
+        schedule = self._repository.update_review_schedule(
+            schedule=schedule,
+            attempt=attempt,
+            interval_days=decision.interval_days,
+            review_streak=decision.review_streak,
+            next_review_at=datetime.now(timezone.utc) + timedelta(days=decision.interval_days),
+        )
         self._session.commit()
         self._session.refresh(attempt)
+        self._session.refresh(schedule)
 
         return AttemptCreateResponse(
             id=attempt.id,
@@ -39,6 +53,8 @@ class LearningRecordService:
             outcome=attempt.outcome,
             attempted_at=attempt.attempted_at,
             review_schedule_id=schedule.id,
+            next_review_at=schedule.next_review_at,
+            interval_days=schedule.interval_days,
         )
 
     def list_due_reviews(self, limit: int) -> list[DueReviewResponse]:

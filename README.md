@@ -73,6 +73,7 @@ The implementation folders may initially be empty. Codex should create them one 
 - Phase 5: structured coaching modes and safe Markdown response rendering.
 - Phase 6: Python-first static context for imports, calls, and selected lines.
 - Phase 7 foundation: PostgreSQL models, migration, repositories, and learning-record API.
+- Phase 8: deterministic review scheduling and persisted study-plan generation.
 
 Not yet included:
 

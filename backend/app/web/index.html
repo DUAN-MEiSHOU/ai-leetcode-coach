@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI LeetCode Coach</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div><p class="eyebrow">Local learning dashboard</p><h1>AI LeetCode Coach</h1></div>
+        <a class="text-link" href="/docs" target="_blank" rel="noopener noreferrer">API docs</a>
+      </header>
+
+      <section class="stats" aria-label="Learning summary">
+        <article><p>Recorded attempts</p><strong id="attempt-count">-</strong></article>
+        <article><p>Due reviews</p><strong id="due-review-count">-</strong></article>
+      </section>
+
+      <section class="workspace">
+        <div class="panel plan-panel">
+          <div class="section-heading"><div><p class="eyebrow">Today</p><h2>Study plan</h2></div></div>
+          <form id="plan-form" class="inline-form">
+            <label>Available time <input id="available-minutes" type="number" min="15" max="480" value="60" required> <span>minutes</span></label>
+            <label>Focus <input id="plan-focus" type="text" maxlength="120" placeholder="Optional"></label>
+            <button type="submit">Generate plan</button>
+          </form>
+          <p id="plan-status" class="status" role="status"></p>
+          <ol id="plan-items" class="plan-items"></ol>
+        </div>
+        <div class="panel review-panel">
+          <div class="section-heading"><div><p class="eyebrow">Review</p><h2>Due now</h2></div><button id="refresh-reviews" class="icon-button" type="button" title="Refresh due reviews">Refresh</button></div>
+          <ul id="due-reviews" class="compact-list"></ul>
+        </div>
+      </section>
+
+      <section class="panel attempt-panel">
+        <div class="section-heading"><div><p class="eyebrow">Learning log</p><h2>Record an attempt</h2></div></div>
+        <form id="attempt-form" class="attempt-form">
+          <label>Problem title<input id="problem-title" maxlength="300" placeholder="e.g. Two Sum"></label>
+          <label>LeetCode URL<input id="problem-url" type="url" maxlength="500" placeholder="https://leetcode.com/problems/..." required></label>
+          <label>Outcome<select id="attempt-outcome"><option value="solved_independently">Solved independently</option><option value="solved_with_hints">Solved with hints</option><option value="viewed_solution">Viewed solution</option><option value="gave_up">Gave up</option><option value="reviewed_easily">Reviewed easily</option><option value="struggled">Struggled</option></select></label>
+          <label>Minutes<input id="attempt-duration" type="number" min="0" max="1440" placeholder="Optional"></label>
+          <label class="notes">Notes<textarea id="attempt-notes" maxlength="2000" placeholder="Optional private note"></textarea></label>
+          <button type="submit">Save attempt</button>
+        </form>
+        <p id="attempt-status" class="status" role="status"></p>
+      </section>
+
+      <section class="panel">
+        <div class="section-heading"><div><p class="eyebrow">History</p><h2>Recent attempts</h2></div><button id="refresh-summary" class="icon-button" type="button" title="Refresh recent attempts">Refresh</button></div>
+        <ul id="recent-attempts" class="compact-list"></ul>
+      </section>
+    </main>
+    <script src="app.js"></script>
+  </body>
+</html>

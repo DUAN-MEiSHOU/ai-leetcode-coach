@@ -78,3 +78,18 @@ class StudyPlanResponse(BaseModel):
     allocated_minutes: int
     remaining_minutes: int
     items: list[StudyPlanItemResponse]
+
+
+class RecentAttemptResponse(BaseModel):
+    id: UUID
+    title: str | None
+    url: str
+    outcome: AttemptOutcome
+    attempted_at: datetime
+    duration_minutes: int | None
+
+
+class DashboardSummaryResponse(BaseModel):
+    total_attempts: int
+    due_review_count: int
+    recent_attempts: list[RecentAttemptResponse]

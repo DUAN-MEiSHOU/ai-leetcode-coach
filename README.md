@@ -99,6 +99,17 @@ Verify:
 http://127.0.0.1:8000/health
 ```
 
+The local learning dashboard is available at:
+
+```text
+http://127.0.0.1:8000/dashboard/
+```
+
+It reuses the same local database and provides a focused loop for generating a
+study plan, recording an attempt, and viewing due reviews and recent attempts.
+It is intentionally local-only and has no authentication, payments, code
+execution, or copied problem bank.
+
 Run backend tests:
 
 ```bash

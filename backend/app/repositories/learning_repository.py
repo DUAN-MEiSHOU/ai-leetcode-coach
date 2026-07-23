@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from app.models.attempt import Attempt
@@ -26,6 +26,9 @@ class LearningRepository:
         self._session.add(user)
         self._session.flush()
         return user
+
+    def get_local_user(self) -> User | None:
+        return self._session.scalar(select(User).where(User.display_name == LOCAL_USER_NAME))
 
     def get_or_create_problem(
         self,
@@ -146,6 +149,33 @@ class LearningRepository:
                 .limit(limit)
             )
         )
+
+    def count_due_reviews(self, *, user_id: UUID, now: datetime) -> int:
+        statement = (
+            select(func.count())
+            .select_from(ReviewSchedule)
+            .where(
+                ReviewSchedule.user_id == user_id,
+                ReviewSchedule.next_review_at <= now,
+            )
+        )
+        return int(self._session.scalar(statement) or 0)
+
+    def list_recent_attempts(
+        self, *, user_id: UUID, limit: int
+    ) -> list[tuple[Attempt, ProblemReference]]:
+        statement = (
+            select(Attempt, ProblemReference)
+            .join(ProblemReference, Attempt.problem_reference_id == ProblemReference.id)
+            .where(Attempt.user_id == user_id)
+            .order_by(Attempt.attempted_at.desc())
+            .limit(limit)
+        )
+        return list(self._session.execute(statement).all())
+
+    def count_attempts(self, *, user_id: UUID) -> int:
+        statement = select(func.count()).select_from(Attempt).where(Attempt.user_id == user_id)
+        return int(self._session.scalar(statement) or 0)
 
     def get_problem(self, problem_id: UUID) -> ProblemReference | None:
         return self._session.get(ProblemReference, problem_id)

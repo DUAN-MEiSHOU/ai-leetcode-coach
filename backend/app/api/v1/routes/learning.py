@@ -5,6 +5,7 @@ from app.db.session import get_session
 from app.schemas.learning import (
     AttemptCreateRequest,
     AttemptCreateResponse,
+    DashboardSummaryResponse,
     DueReviewResponse,
     StudyPlanCreateRequest,
     StudyPlanResponse,
@@ -13,6 +14,14 @@ from app.services.learning_record_service import LearningRecordService
 from app.services.study_plan_service import StudyPlanService
 
 router = APIRouter()
+
+
+@router.get("/dashboard/summary", response_model=DashboardSummaryResponse)
+def get_dashboard_summary(
+    recent_limit: int = Query(default=8, ge=1, le=30),
+    session: Session = Depends(get_session),
+) -> DashboardSummaryResponse:
+    return LearningRecordService(session).get_dashboard_summary(recent_limit)
 
 
 @router.post("/attempts", response_model=AttemptCreateResponse, status_code=201)

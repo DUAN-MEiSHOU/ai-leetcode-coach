@@ -3,7 +3,13 @@ from datetime import datetime, timedelta, timezone
 from sqlalchemy.orm import Session
 
 from app.repositories.learning_repository import LearningRepository
-from app.schemas.learning import AttemptCreateRequest, AttemptCreateResponse, DueReviewResponse
+from app.schemas.learning import (
+    AttemptCreateRequest,
+    AttemptCreateResponse,
+    DashboardSummaryResponse,
+    DueReviewResponse,
+    RecentAttemptResponse,
+)
 from app.services.review_service import ReviewService
 
 
@@ -85,3 +91,33 @@ class LearningRecordService:
                 )
             )
         return responses
+
+    def get_dashboard_summary(self, recent_limit: int) -> DashboardSummaryResponse:
+        user = self._repository.get_local_user()
+        if user is None:
+            return DashboardSummaryResponse(
+                total_attempts=0,
+                due_review_count=0,
+                recent_attempts=[],
+            )
+
+        now = datetime.now(timezone.utc)
+        recent_attempts = self._repository.list_recent_attempts(
+            user_id=user.id,
+            limit=recent_limit,
+        )
+        return DashboardSummaryResponse(
+            total_attempts=self._repository.count_attempts(user_id=user.id),
+            due_review_count=self._repository.count_due_reviews(user_id=user.id, now=now),
+            recent_attempts=[
+                RecentAttemptResponse(
+                    id=attempt.id,
+                    title=problem.title,
+                    url=problem.url,
+                    outcome=attempt.outcome,
+                    attempted_at=attempt.attempted_at,
+                    duration_minutes=attempt.duration_minutes,
+                )
+                for attempt, problem in recent_attempts
+            ],
+        )

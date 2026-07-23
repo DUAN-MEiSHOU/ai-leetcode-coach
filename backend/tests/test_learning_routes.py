@@ -67,3 +67,23 @@ class LearningRouteTests(unittest.TestCase):
             [item["item_type"] for item in response.json()["items"]],
             ["new", "new"],
         )
+
+    def test_dashboard_summary_includes_recent_attempt(self) -> None:
+        self.client.post(
+            "/api/v1/attempts",
+            json={
+                "problem": {
+                    "platform": "leetcode",
+                    "url": "https://leetcode.com/problems/two-sum/",
+                    "title": "Two Sum",
+                },
+                "outcome": "solved_with_hints",
+            },
+        )
+
+        response = self.client.get("/api/v1/dashboard/summary")
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["total_attempts"], 1)
+        self.assertEqual(response.json()["due_review_count"], 0)
+        self.assertEqual(response.json()["recent_attempts"][0]["title"], "Two Sum")

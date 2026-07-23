@@ -40,6 +40,11 @@ function createFloatingEntry() {
       outline: 3px solid #8ab4ff;
       outline-offset: 3px;
     }
+
+    button:disabled {
+      cursor: wait;
+      opacity: 0.75;
+    }
   `;
 
   const button = document.createElement("button");
@@ -47,8 +52,26 @@ function createFloatingEntry() {
   button.textContent = "AI";
   button.setAttribute("aria-label", "Open AI LeetCode Coach");
   button.title = "Open AI LeetCode Coach";
-  button.addEventListener("click", () => {
-    chrome.runtime.sendMessage({ type: "coach:open-side-panel" });
+  button.addEventListener("click", async () => {
+    button.disabled = true;
+    try {
+      const response = await chrome.runtime.sendMessage({
+        type: "coach:open-side-panel"
+      });
+      if (!response?.ok) {
+        throw new Error(response?.error || "The Side Panel could not be opened.");
+      }
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      button.textContent = "!";
+      button.title = message;
+      window.setTimeout(() => {
+        button.textContent = "AI";
+        button.title = "Open AI LeetCode Coach";
+      }, 2500);
+    } finally {
+      button.disabled = false;
+    }
   });
 
   shadow.append(style, button);

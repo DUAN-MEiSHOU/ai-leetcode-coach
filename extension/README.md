@@ -1,6 +1,6 @@
 # AI LeetCode Coach Extension
 
-This is a local-only Manifest V3 extension prototype.
+This is a local-only Manifest V3 extension prototype for Chrome 116 or newer.
 
 ## What Works
 

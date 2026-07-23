@@ -48,12 +48,21 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     });
 });
 
-chrome.runtime.onMessage.addListener((message, sender) => {
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message?.type !== "coach:open-side-panel" || !sender.tab?.id) {
     return;
   }
 
-  chrome.sidePanel.open({ tabId: sender.tab.id }).catch((error) => {
-    console.error("Failed to open side panel from floating entry:", error);
-  });
+  (async () => {
+    try {
+      await chrome.sidePanel.open({ tabId: sender.tab.id });
+      sendResponse({ ok: true });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      console.error("Failed to open side panel from floating entry:", message);
+      sendResponse({ ok: false, error: message });
+    }
+  })();
+
+  return true;
 });

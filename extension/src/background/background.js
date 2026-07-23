@@ -1,3 +1,24 @@
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message?.type !== "coach:open-side-panel" || !sender.tab?.id) {
+    return;
+  }
+
+  (async () => {
+    try {
+      await chrome.sidePanel.open({ tabId: sender.tab.id });
+      sendResponse({ ok: true });
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      console.error("Failed to open side panel from floating entry:", errorMessage);
+      sendResponse({ ok: false, error: errorMessage });
+    }
+  })();
+
+  return true;
+});
+
+console.info("AI LeetCode Coach service worker ready", chrome.runtime.id);
+
 const CONTEXT_MENU_ID = "send-selection-to-ai-leetcode-coach";
 const PENDING_SELECTION_KEY = "pendingSelection";
 
@@ -46,23 +67,4 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
     .catch(() => {
       // The Side Panel may not be ready yet; storage.local is the durable handoff.
     });
-});
-
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message?.type !== "coach:open-side-panel" || !sender.tab?.id) {
-    return;
-  }
-
-  (async () => {
-    try {
-      await chrome.sidePanel.open({ tabId: sender.tab.id });
-      sendResponse({ ok: true });
-    } catch (error) {
-      const message = error instanceof Error ? error.message : String(error);
-      console.error("Failed to open side panel from floating entry:", message);
-      sendResponse({ ok: false, error: message });
-    }
-  })();
-
-  return true;
 });

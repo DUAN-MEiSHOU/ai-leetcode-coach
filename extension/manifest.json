@@ -2,12 +2,14 @@
   "manifest_version": 3,
   "name": "AI LeetCode Coach",
   "description": "A Side Panel learning coach shell for user-selected LeetCode context.",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "minimum_chrome_version": "114",
   "permissions": ["sidePanel", "contextMenus", "storage"],
   "host_permissions": [
     "http://127.0.0.1:8000/*",
-    "http://localhost:8000/*"
+    "http://localhost:8000/*",
+    "https://leetcode.com/*",
+    "https://leetcode.cn/*"
   ],
   "action": {
     "default_title": "Open AI LeetCode Coach"
@@ -17,5 +19,12 @@
   },
   "side_panel": {
     "default_path": "src/sidepanel/index.html"
-  }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://leetcode.com/*", "https://leetcode.cn/*"],
+      "js": ["src/content/floating-entry.js"],
+      "run_at": "document_idle"
+    }
+  ]
 }

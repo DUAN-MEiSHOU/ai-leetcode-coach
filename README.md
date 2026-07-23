@@ -74,6 +74,7 @@ The implementation folders may initially be empty. Codex should create them one 
 - Phase 6: Python-first static context for imports, calls, and selected lines.
 - Phase 7 foundation: PostgreSQL models, migration, repositories, and learning-record API.
 - Phase 8: deterministic review scheduling and persisted study-plan generation.
+- Phase 9: LeetCode-specific floating Side Panel entry with restricted host access.
 
 Not yet included:
 

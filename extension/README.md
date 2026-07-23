@@ -14,6 +14,7 @@ This is a local-only Manifest V3 extension prototype.
 - Send button.
 - Right-click selected webpage text and send it to the Side Panel.
 - Local FastAPI request to a DeepSeek-backed explanation endpoint.
+- A small floating AI entry on `leetcode.com` and `leetcode.cn` that opens the Side Panel.
 
 ## Not Included Yet
 
@@ -38,6 +39,12 @@ This is a local-only Manifest V3 extension prototype.
 4. Confirm the Side Panel opens and the selected text appears in the input area.
 
 This feature only receives text selected by the user. It does not read or scrape the full page.
+
+## Floating Entry
+
+On `leetcode.com` and `leetcode.cn`, a small fixed **AI** button appears near the
+bottom-right corner. Click it to open the Side Panel. The content script only
+creates this button and never reads problem text, editor content, or page state.
 
 ## Get A Coach Explanation
 

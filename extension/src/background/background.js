@@ -47,3 +47,13 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
       // The Side Panel may not be ready yet; storage.local is the durable handoff.
     });
 });
+
+chrome.runtime.onMessage.addListener((message, sender) => {
+  if (message?.type !== "coach:open-side-panel" || !sender.tab?.id) {
+    return;
+  }
+
+  chrome.sidePanel.open({ tabId: sender.tab.id }).catch((error) => {
+    console.error("Failed to open side panel from floating entry:", error);
+  });
+});
